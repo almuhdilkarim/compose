@@ -1,0 +1,31 @@
+services:
+  devel_maria:
+    image: mariadb:latest
+    container_name: mariadb
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: devnull
+      MYSQL_USER: null
+      MYSQL_PASSWORD: devnull
+    ports:
+      - 5002:3306
+    volumes:
+      - dev_mariadata:/var/lib/mysql
+    networks:
+      - devel
+  panel_maria:
+    image: adminer:latest
+    container_name: adminer
+    environment:
+      ADMINER_DEFAULT_SERVER: devel_maria
+    restart: always
+    ports:
+      - 5001:8080
+    networks:
+      - devel
+volumes:
+  dev_mariadata:
+    name: "devel-mariadb-data"
+networks:
+  devel:
+    name: "develnet"
